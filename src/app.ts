@@ -11,7 +11,7 @@ import divisionRouter from "./routes/divisionRoutes";
 const app: Express = express();
 
 // Setup env configuration
-dotenv.config({ path: "../config.env" });
+dotenv.config();
 
 // 1) Setting Security Header
 app.use(helmet());
