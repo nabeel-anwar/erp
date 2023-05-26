@@ -6,6 +6,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import xss from "xss-clean";
 
+import divisionRouter from "./routes/divisionRoutes";
+
 const app: Express = express();
 
 // Setup env configuration
@@ -36,5 +38,7 @@ app.use(mongoSanitize());
 
 // Data Sanitize against XSS
 app.use(xss());
+
+app.use("/api/v1/divisions", divisionRouter);
 
 export default app;
