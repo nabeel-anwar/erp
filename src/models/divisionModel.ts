@@ -4,19 +4,15 @@ import { Division } from "src/types/division";
 const divisionSchema: Schema = new Schema({
   name: {
     type: String,
-    require: [true, "A tour must have a name"],
+    require: [true, "division must have a name"],
     unique: true,
     trim: true,
-    maxLength: [40, "A maximum character size is 40"],
-    minLength: [10, "A minimum character size is 10"],
+    maxLength: [40, "maximum character size is 40"],
+    minLength: [10, "minimum character size is 10"],
   },
   division: {
     type: Schema.Types.ObjectId,
     ref: "Division",
-  },
-  currency: {
-    types: Schema.Types.ObjectId,
-    ref: "Currency",
   },
 });
 
