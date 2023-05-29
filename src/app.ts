@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import xss from "xss-clean";
 
+import currencyRouter from "./routes/currencyRoutes";
 import divisionRouter from "./routes/divisionRoutes";
 
 const app: Express = express();
@@ -40,5 +41,6 @@ app.use(mongoSanitize());
 app.use(xss());
 
 app.use("/api/v1/divisions", divisionRouter);
+app.use("/api/v1/currency", currencyRouter);
 
 export default app;

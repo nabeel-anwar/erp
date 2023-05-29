@@ -1,21 +1,28 @@
 import { model, Schema } from "mongoose";
-import { Division } from "src/types/division";
+import { Currency } from "src/types/division";
 
-const divisionSchema: Schema = new Schema({
+const currencySchema: Schema = new Schema({
   name: {
     type: String,
-    require: [true, "division must have a name"],
+    require: [true, "currency must have a name"],
     unique: true,
     trim: true,
     maxLength: [40, "maximum character size is 40"],
-    minLength: [10, "minimum character size is 10"],
   },
-  division: {
-    type: Schema.Types.ObjectId,
-    ref: "Division",
+  symbol: {
+    type: String,
+    require: [true, "currency must have a symbol"],
+    trim: true,
+    maxLength: [16, "maximum character size is 40"],
+  },
+  iso: {
+    type: String,
+    require: [true, "currency must have a iso"],
+    trim: true,
+    maxLength: [16, "maximum character size is 40"],
   },
 });
 
-const Division = model<Division>("Division", divisionSchema);
+const Currency = model<Currency>("Currency", currencySchema);
 
-export default Division;
+export default Currency;
