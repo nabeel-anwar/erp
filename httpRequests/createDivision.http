@@ -2,6 +2,6 @@ POST http://localhost:3000/api/v1/divisions
 Content-Type: application/json
 
 {
-    "name": "Child Division",
+    "name": "MSPNG",
     "division": "647347372626ad26224bde30"
 }

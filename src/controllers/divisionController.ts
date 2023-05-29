@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 
 import Division from "../models/divisionModel";
+import handlerFactory from "./handlerFactory";
 
 const getDivision = async (req: Request, res: Response) => {
   try {
     const data = await Division.find().populate({
       path: "division",
-      select: "-__v -_id",
+      select: "-__v",
     });
     res.status(200).json({
       status: "Success",
@@ -18,23 +19,6 @@ const getDivision = async (req: Request, res: Response) => {
   } catch (error) {}
 };
 
-const createDivision = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const doc = await Division.create(req.body);
-
-    res.status(201).json({
-      status: "success",
-      data: {
-        data: doc,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+const createDivision = handlerFactory.createOne(Division);
 
 export default { getDivision, createDivision };

@@ -8,7 +8,7 @@ const divisionSchema: Schema = new Schema({
     unique: true,
     trim: true,
     maxLength: [40, "maximum character size is 40"],
-    minLength: [5, "minimum character size is 10"],
+    minLength: [10, "minimum character size is 10"],
   },
   division: {
     type: Schema.Types.ObjectId,
