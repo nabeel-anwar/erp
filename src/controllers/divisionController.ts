@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 import Division from "../models/divisionModel";
+import AppError from "../utils/appError";
 import handlerFactory from "./handlerFactory";
 
-const getDivision = async (req: Request, res: Response) => {
+const getDivision = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await Division.find().populate({
       path: "division",
@@ -11,12 +12,13 @@ const getDivision = async (req: Request, res: Response) => {
     });
     res.status(200).json({
       status: "Success",
-      message: "this route is not yet defined",
       data: {
         data,
       },
     });
-  } catch (error) {}
+  } catch (error: any) {
+    next(new AppError(error.message, 404));
+  }
 };
 
 const createDivision = handlerFactory.createOne(Division);

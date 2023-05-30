@@ -2,7 +2,7 @@ POST http://localhost:3000/api/v1/currency
 Content-Type: application/json
 
 {
-    "name": "United State Doller",
-    "iso": "USD",
+    "name": "Canadian Doller",
+    "iso": "CSD",
     "symbol": "$"
 }

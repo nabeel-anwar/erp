@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
 
+import AppError from "../utils/appError";
+
 const deleteOne = (Model: Model<any>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -49,8 +51,8 @@ const createOne = (Model: Model<any>) => {
           data: doc,
         },
       });
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      next(new AppError(error.message, 404));
     }
   };
 };

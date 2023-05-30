@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import xss from "xss-clean";
 
+import errorHandler from "./controllers/errorController";
 import currencyRouter from "./routes/currencyRoutes";
 import divisionRouter from "./routes/divisionRoutes";
 
@@ -42,5 +43,8 @@ app.use(xss());
 
 app.use("/api/v1/divisions", divisionRouter);
 app.use("/api/v1/currency", currencyRouter);
+
+// Error Handler(Middleware)
+app.use(errorHandler);
 
 export default app;
