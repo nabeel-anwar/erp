@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
 
+import APIFeatures from "../utils/apiFeatures";
 import AppError from "../utils/appError";
 
 const deleteOne = (Model: Model<any>) => {
@@ -77,35 +78,31 @@ const createOne = (Model: Model<any>) => {
 //   };
 // };
 
-// const getAll = (Model) => {
-//   return async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//       const filter = {};
-//       if (req.params.tourId) filter.tour = req.params.tourId; // for getting reviews of specific tour
+const getAll = (Model: Model<any>) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      console.log(req.query);
+      const features = new APIFeatures(Model.find(), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate();
 
-//       console.log(req.query);
-//       const features = new APIFeatures(Model.find(filter), req.query)
-//         .filter()
-//         .sort()
-//         .limitFields()
-//         .paginate();
+      // Execute Query
+      const docs = await features.queryResult;
+      const totalDocs = await Model.countDocuments();
 
-//       // Execute Query
-//       const doc = await features.queryResult;
+      // Send res
+      res.status(200).json({
+        draw: "1",
+        recordsTotal: totalDocs,
+        recordsFiltered: docs.length,
+        data: docs,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+};
 
-//       // Send res
-//       res.status(200).json({
-//         status: "success",
-//         reqedAt: req.reqTime,
-//         length: doc.length,
-//         data: {
-//           data: doc,
-//         },
-//       });
-//     } catch (error) {
-//       next(error);
-//     }
-//   };
-// };
-
-export default { createOne };
+export default { createOne, getAll };

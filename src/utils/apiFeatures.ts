@@ -1,17 +1,17 @@
 import { Request } from "express";
-import { Model, QueryOptions } from "mongoose";
+import { Model, Query } from "mongoose";
 
 class APIFeatures {
-  public queryResult: QueryOptions | undefined;
-  private modal: Model<any>;
+  public queryResult?: any;
+  private modal: any;
   private queryObj: Request["query"];
 
-  constructor(modal: Model<any>, queryObj: Request["query"]) {
+  constructor(modal: any, queryObj: Request["query"]) {
     this.modal = modal; // Modal that find the data from DB
     this.queryObj = queryObj; // Object that create by express when get request coming with param
   }
 
-  async filter() {
+  filter() {
     const queryObj = { ...this.queryObj };
     const excludedFields = ["page", "sort", "limit", "fields"];
     excludedFields.forEach((el) => delete queryObj[el]);
@@ -24,7 +24,7 @@ class APIFeatures {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    this.queryResult = await this.modal.find(JSON.parse(queryStr));
+    this.queryResult = this.modal.find(JSON.parse(queryStr));
     return this;
   }
 
@@ -51,22 +51,23 @@ class APIFeatures {
   }
 
   paginate() {
+    let limit: number;
     if (this.queryObj.page) {
-      const page = Number(this.queryObj.page) || 1;
-      const limit = Number(this.queryObj.limit) || 100;
+      const page = +this.queryObj.page || 1;
+      this.queryObj.limit ? (limit = +this.queryObj.limit) : (limit = 100);
       const skip = (page - 1) * limit;
 
-      this.queryResult = this.queryResult.skip(skip).limit(limit);
+      this.queryResult = this.queryResult?.skip(skip).limit(limit);
 
-      this.modal.countDocuments().then((numTours) => {
-        if (skip >= numTours) {
-          throw new Error("This page does not exist");
-        }
-      });
+      // this.modal.countDocuments().then((numOfDoc: number) => {
+      //   if (skip >= numOfDoc) {
+      //     throw new Error("This page does not exist");
+      //   }
+      // });
     }
 
     return this;
   }
 }
 
-module.exports = APIFeatures;
+export default APIFeatures;
