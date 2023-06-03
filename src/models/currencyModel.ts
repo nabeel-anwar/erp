@@ -23,6 +23,8 @@ const currencySchema: Schema = new Schema({
   },
 });
 
+currencySchema.index({ "$**": "text" });
+
 const Currency = model<Currency>("Currency", currencySchema);
 
 export default Currency;

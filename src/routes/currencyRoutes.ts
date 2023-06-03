@@ -4,6 +4,9 @@ import currencyController from "../controllers/currencyController";
 
 const router: Router = express.Router();
 
-router.route("/").post(currencyController.createCurrency);
+router
+  .route("/")
+  .get(currencyController.getCurrency)
+  .post(currencyController.createCurrency);
 
 export default router;

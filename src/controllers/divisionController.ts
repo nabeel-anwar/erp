@@ -1,5 +1,3 @@
-import { NextFunction, Request, Response } from "express";
-
 import Division from "../models/divisionModel";
 import handlerFactory from "./handlerFactory";
 

@@ -16,6 +16,8 @@ const divisionSchema: Schema = new Schema({
   },
 });
 
+divisionSchema.index({ "$**": "text" });
+
 const Division = model<Division>("Division", divisionSchema);
 
 export default Division;

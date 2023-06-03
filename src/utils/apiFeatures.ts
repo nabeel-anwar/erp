@@ -1,4 +1,4 @@
-import { Request } from "express";
+import { query, Request } from "express";
 import { Model, Query } from "mongoose";
 
 class APIFeatures {
@@ -24,7 +24,24 @@ class APIFeatures {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    this.queryResult = this.modal.find(JSON.parse(queryStr));
+    if (this.queryObj.search) {
+      const searchString = this.queryObj.search; // getting search string
+      let fields = Object.keys(this.modal.schema.paths); // getting documents keys to search
+
+      fields = fields.filter((f) => f !== "_id" && f !== "__v"); // filter unnecessary key
+      fields = fields.filter(
+        (f) => this.modal.schema.paths[f].instance !== "ObjectId"
+      ); // filter objectID keys (which is use to populate)
+
+      const regexQuery = fields.map((field) => ({
+        [field]: { $regex: searchString, $options: "i" },
+      })); // creating fields array like: { name: { $regex: "searchString", $options: "i" } };
+
+      this.queryResult = this.modal.find({ $or: regexQuery });
+    } else {
+      this.queryResult = this.modal.find(JSON.parse(queryStr));
+    }
+
     return this;
   }
 

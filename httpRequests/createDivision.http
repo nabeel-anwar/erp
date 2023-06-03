@@ -2,6 +2,6 @@ POST http://localhost:3000/api/v1/divisions
 Content-Type: application/json
 
 {
-    "name": "MSPNG",
+    "name": "Finance Division",
     "division": "647347372626ad26224bde30"
 }
