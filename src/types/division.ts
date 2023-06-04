@@ -5,8 +5,3 @@ export interface Division {
   currency?: Types.ObjectId;
   name?: string;
 }
-export interface Currency {
-  name?: string;
-  symbol?: string;
-  iso?: string;
-}
